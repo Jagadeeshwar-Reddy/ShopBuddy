@@ -9,7 +9,7 @@
 #import "StoreLocatorViewController.h"
 #import "DBOperationManager.h"
 
-@interface StoreLocatorViewController ()
+@interface StoreLocatorViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) NSMutableArray *stores;
 @property (nonatomic, strong) NSIndexPath *checkedIndexPath;
 - (IBAction)doneTapped:(id)sender;
@@ -181,5 +181,8 @@
     [[DBOperationManager instance] updateStoreInformation:[self.stores objectAtIndex:indexPath.row] toShoppingList:self.listId];
 }
 
-
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self findStoresAction:self.findstoresbutton];
+    return YES;
+}
 @end

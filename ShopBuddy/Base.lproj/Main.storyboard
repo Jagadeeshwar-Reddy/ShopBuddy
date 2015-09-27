@@ -10,7 +10,7 @@
         <scene sceneID="pY4-Hu-kfo">
             <objects>
                 <navigationController title="Master" id="RMx-3f-FxP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="List" image="shoplist.png" id="Toc-va-zfJ"/>
+                    <tabBarItem key="tabBarItem" title="List" image="tabbarshoplist.png" id="Toc-va-zfJ"/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -36,7 +36,7 @@
                             <subviews>
                                 <searchBar contentMode="redraw" placeholder="Item name" translatesAutoresizingMaskIntoConstraints="NO" id="wgd-tf-jfY">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                                    <textInputTraits key="textInputTraits"/>
                                     <connections>
                                         <outlet property="delegate" destination="2cU-Wj-zde" id="KsZ-5j-Zje"/>
                                     </connections>
@@ -106,7 +106,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P22-KH-15R">
-                                            <rect key="frame" x="21" y="10" width="64" height="32"/>
+                                            <rect key="frame" x="54" y="10" width="64" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="fzZ-0s-Rn2"/>
                                             </constraints>
@@ -115,7 +115,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e69-xh-XHz">
-                                            <rect key="frame" x="21" y="46" width="513" height="21"/>
+                                            <rect key="frame" x="54" y="46" width="480" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="70M-Yq-BmD"/>
                                             </constraints>
@@ -123,14 +123,29 @@
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sh.png" translatesAutoresizingMaskIntoConstraints="NO" id="Q1M-CM-7EF">
+                                            <rect key="frame" x="12" y="11" width="30" height="56"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="56" id="4Jx-V5-dQu"/>
+                                                <constraint firstAttribute="width" constant="30" id="taH-4B-SCW"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="P22-KH-15R" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="21" id="1Ze-Mk-MfA"/>
-                                        <constraint firstItem="e69-xh-XHz" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="21" id="NnL-7Z-0tj"/>
+                                        <constraint firstItem="Q1M-CM-7EF" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="topMargin" constant="3" id="3f2-vh-Rga"/>
+                                        <constraint firstItem="e69-xh-XHz" firstAttribute="leading" secondItem="P22-KH-15R" secondAttribute="leading" id="KfI-IO-gQZ"/>
                                         <constraint firstItem="P22-KH-15R" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="10" id="Qt9-4p-rGW"/>
+                                        <constraint firstItem="P22-KH-15R" firstAttribute="leading" secondItem="Q1M-CM-7EF" secondAttribute="trailing" constant="12" id="UBc-ks-Hj3"/>
+                                        <constraint firstItem="Q1M-CM-7EF" firstAttribute="centerY" secondItem="37f-cq-3Eg" secondAttribute="centerY" id="b6J-aA-u6Z"/>
                                         <constraint firstItem="e69-xh-XHz" firstAttribute="top" secondItem="P22-KH-15R" secondAttribute="bottom" constant="4" id="bKn-1L-Rd7"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="e69-xh-XHz" secondAttribute="trailing" constant="25" id="gOW-BH-0yz"/>
+                                        <constraint firstItem="Q1M-CM-7EF" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leadingMargin" constant="4" id="yMp-1q-ZgV"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="3f2-vh-Rga"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -304,11 +319,11 @@
             </objects>
             <point key="canvasLocation" x="-2696" y="-2784"/>
         </scene>
-        <!--Chat-->
+        <!--Conversations-->
         <scene sceneID="NOf-Sq-vo5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8kJ-te-PZE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chat" image="chat.png" id="IM4-un-bNh"/>
+                    <tabBarItem key="tabBarItem" title="Conversations" image="chat.png" id="IM4-un-bNh"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HE6-Yh-gBe">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -429,6 +444,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="findstoresbutton" destination="a1G-Y4-Sh9" id="gqg-DJ-INv"/>
                         <outlet property="loadingIndicator" destination="qeV-I1-lQq" id="WZe-sJ-htO"/>
                         <outlet property="searchField" destination="1pi-fD-eeY" id="63C-Nj-Nbv"/>
                         <outlet property="tableview" destination="k2H-a2-Pcz" id="tAK-Gc-hrX"/>
@@ -459,6 +475,7 @@
     </scenes>
     <resources>
         <image name="chat.png" width="32" height="32"/>
-        <image name="shoplist.png" width="32" height="32"/>
+        <image name="sh.png" width="62" height="62"/>
+        <image name="tabbarshoplist.png" width="32" height="32"/>
     </resources>
 </document>

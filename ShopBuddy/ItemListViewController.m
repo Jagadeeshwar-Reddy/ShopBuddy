@@ -78,6 +78,7 @@
     if (buttonIndex == 0) {
         NSLog(@"share");
         
+        
         if (self.appDelegate.mpcHandler.session != nil) {
             [[self.appDelegate mpcHandler] setupBrowser];
             [[[self.appDelegate mpcHandler] browser] setDelegate:self];
@@ -249,6 +250,10 @@
             NSError *error = nil;
             [self.appDelegate.mpcHandler.session sendData:jsonData toPeers:self.appDelegate.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
 
+            
+            if ([self unPickedItems].count == 0) {
+                [[[UIAlertView alloc] initWithTitle:@"Hola! All items are picked." message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            }
             break;
         }
         default:
@@ -336,7 +341,7 @@
     }
 }
 
-
+#pragma  mark - IBAction
 - (IBAction)sortByItemButtonAction:(id)sender {
     BOOL isAscendingOrder = YES;
     
@@ -363,8 +368,11 @@
         [self.sortByAisleButton setTitle:@"Aisle Number ↑" forState:UIControlStateNormal];
     }
 
-    NSSortDescriptor *brandDescriptor = [[NSSortDescriptor alloc] initWithKey:@"aisle" ascending:isAscendingOrder];
-    self.dataArray = [[self.dataArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:brandDescriptor]] mutableCopy];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor
+                                        sortDescriptorWithKey:@"aisle" ascending:isAscendingOrder comparator:^(id obj1, id obj2) {
+                                            return [obj1 compare:obj2 options:NSNumericSearch];
+                                        }];
+    self.dataArray = [[self.dataArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]] mutableCopy];
     [self.tableView reloadData];
 }
 
@@ -374,16 +382,26 @@
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
     [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
-    
-    
-    NSDictionary *messageInformation = @{@"ShopListShare":  @{@"user":[DBOperationManager instance].user, @"listTitle":self.detailItem[@"listTitle"], @"listId":self.detailItem[@"listId"], @"items":self.dataArray} };
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:messageInformation options:NSJSONWritingPrettyPrinted error:nil];
-    NSError *error = nil;
-    [self.appDelegate.mpcHandler.session sendData:jsonData toPeers:self.appDelegate.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
+    [self shareBasket];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
-    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:^{
+        
+        if(self.appDelegate.mpcHandler.session.connectedPeers.count){
+            [self shareBasket];
+        }
+    }];
+}
+-(void)shareBasket{
+    [[DBOperationManager instance] updateBasketSharringStaus:1 toShoppingList:self.detailItem[@"listId"]];
+    
+    //storeToShop
+    NSDictionary *messageInformation = @{@"ShopListShare":  @{@"user":[DBOperationManager instance].user, @"listTitle":self.detailItem[@"listTitle"], @"listId":self.detailItem[@"listId"], @"storeToShop":[[DBOperationManager instance] storeNameForList:self.detailItem[@"listId"]] , @"items":self.dataArray} };
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:messageInformation options:NSJSONWritingPrettyPrinted error:nil];
+    NSError *error = nil;
+    [self.appDelegate.mpcHandler.session sendData:jsonData toPeers:self.appDelegate.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
+
 }
 
 - (void)peerDidReceiveShopListData:(NSNotification *)notification {
@@ -409,4 +427,12 @@
         [self.tableView reloadData];
     }
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
 @end

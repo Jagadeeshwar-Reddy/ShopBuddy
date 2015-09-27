@@ -111,6 +111,7 @@
     UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
     UILabel *detailTitleLabel = (UILabel *)[cell.contentView viewWithTag:2];
     
+    UIImageView *imgview = (UIImageView *)[cell.contentView viewWithTag:3];
     
     if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"9.0")) {
         titleLabel.font=[UIFont systemFontOfSize:20];
@@ -127,6 +128,12 @@
     if (listItems.count==0) {
         detailTitleLabel.text = @"<No Items defined>";
     }
+    
+    if ([[DBOperationManager instance] isListShared:[self.objects[indexPath.row] objectForKey:@"listId"]]) {
+        imgview.image = [UIImage imageNamed:@"shared-list-1.png"];
+    }else{
+        imgview.image = [UIImage imageNamed:@"sh.png"];
+    }
     return cell;
 }
 
@@ -137,8 +144,11 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [[DBOperationManager instance] deleteShoplist:[self.objects[indexPath.row] objectForKey:@"listId"]];
+        
         [self.objects removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }

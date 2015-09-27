@@ -231,21 +231,25 @@
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     [searchBar setShowsCancelButton:YES animated:YES];
 }
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
+/*- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     [searchBar setShowsCancelButton:NO animated:YES];
     isInSearchMode=NO;
     [self.tableView reloadData];
-}
+}*/
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [searchBar setShowsCancelButton:NO animated:YES];
     isInSearchMode=NO;
     [self.tableView reloadData];
     [searchBar resignFirstResponder];
     searchBar.text=@"";
 
 }
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    [searchBar resignFirstResponder];
+}
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    NSString *str = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
+    NSString *str = [searchBar.text stringByReplacingCharactersInRange:range withString:[text stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
     //NSLog(@"String:%@",str);
     
     NSArray *filteredarray = [self.dataArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(name CONTAINS[cd] %@)", [@" " stringByAppendingString:str]]];

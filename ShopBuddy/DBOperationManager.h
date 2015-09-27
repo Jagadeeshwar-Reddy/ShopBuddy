@@ -22,6 +22,8 @@
 -(void)updateStoreInformation:(NSString*)storeName toShoppingList:(NSString*)listId;
 -(void)createNewUser;
 -(void)insertSharedShoppingList:(NSDictionary*)list;
+-(void)updateBasketSharringStaus:(BOOL)status toShoppingList:(NSString*)listId;
+-(void)deleteShoplist:(NSString *)listId;
 
 ////////////////////////
 //  Read Operations
@@ -30,4 +32,6 @@
 -(NSMutableArray*)defaultItems;
 -(NSMutableArray *)itemsForList:(NSString*)listId;
 -(NSString *)user;
+-(NSString*)storeNameForList:(NSString*)listId;
+-(BOOL)isListShared:(NSString*)listId;
 @end

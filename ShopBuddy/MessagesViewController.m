@@ -77,7 +77,7 @@
         
         if (!self.isViewLoaded || !self.view.window) {
             // viewController is visible
-            [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%d", [[[self navigationController] tabBarItem].badgeValue integerValue]+1];
+            [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%ld", [[[self navigationController] tabBarItem].badgeValue integerValue]+1];
         }
     }
 }

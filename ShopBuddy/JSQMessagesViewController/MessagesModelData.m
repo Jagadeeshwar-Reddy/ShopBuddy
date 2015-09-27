@@ -29,7 +29,7 @@
         
         [self.messages addObject:[[JSQMessage alloc] initWithSenderId:[[DBOperationManager instance] user]
                                                     senderDisplayName:[UIDevice currentDevice].name
-                                                                 date:[NSDate distantPast]
+                                                                 date:[NSDate date]
                                                                  text:@"Welcome!"]];
         
         

@@ -75,7 +75,7 @@
     return documentsDir;
 }
 
-
+#pragma mark - Insert Operations
 ////////////////////////
 //  Insert Operations
 ////////////////////////
@@ -90,6 +90,13 @@
         [db commit];
     }];
 }
+-(void)deleteShoplist:(NSString *)listId{
+    [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"DELETE FROM Items WHERE listId = ?", listId];
+        [db executeUpdate:@"DELETE FROM shoppingList WHERE listId = ?", listId];
+
+    }];
+}
 -(void)insertSharedShoppingList:(NSDictionary*)list{
     [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
         
@@ -102,7 +109,7 @@
         }
         
         if (isListAlreadyExist == NO) {
-            [db executeUpdate:@"INSERT INTO shoppingList (listId, listTitle, listOwner) VALUES (?, ?, ?)", list[@"listId"], list[@"listTitle"], list[@"user"]];
+            [db executeUpdate:@"INSERT INTO shoppingList (listId, listTitle, listOwner, storeToShop, isShared) VALUES (?, ?, ?, ?, ?)", list[@"listId"], list[@"listTitle"], list[@"user"], list[@"storeToShop"], @1];
         }else{
             [db executeUpdate:@"DELETE FROM Items WHERE listId = ?",list[@"listId"]];
         }
@@ -143,6 +150,12 @@
         [db executeUpdate:@"UPDATE shoppingList SET storeToShop = ? WHERE listId = ?", storeName, listId];
     }];
 }
+-(void)updateBasketSharringStaus:(BOOL)status toShoppingList:(NSString*)listId{
+    [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"UPDATE shoppingList SET isShared = ? WHERE listId = ?", @(status), listId];
+    }];
+}
+
 -(void)createNewUser{
     //
     [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
@@ -249,6 +262,31 @@
         FMResultSet *rs = [db executeQuery:@"SELECT username FROM userMaster"];
         while ([rs next]) {
             str=[rs stringForColumnIndex:0];
+        }
+    }];
+    return str;
+}
+
+-(NSString*)storeNameForList:(NSString*)listId{
+    
+    __block NSString* str = @"";
+    
+    [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
+        FMResultSet *rs = [db executeQuery:@"SELECT storeToShop FROM shoppingList WHERE listId = ?", listId];
+        while ([rs next]) {
+            str=[rs stringForColumnIndex:0];
+        }
+    }];
+    return (str==nil ? @"" : str);
+}
+-(BOOL)isListShared:(NSString*)listId{
+    
+    __block BOOL str = NO;
+    
+    [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
+        FMResultSet *rs = [db executeQuery:@"SELECT isShared FROM shoppingList WHERE listId = ?", listId];
+        while ([rs next]) {
+            str=[rs boolForColumnIndex:0];
         }
     }];
     return str;
