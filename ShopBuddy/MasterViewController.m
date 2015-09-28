@@ -110,8 +110,10 @@
 
     UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
     UILabel *detailTitleLabel = (UILabel *)[cell.contentView viewWithTag:2];
-    
     UIImageView *imgview = (UIImageView *)[cell.contentView viewWithTag:3];
+    UILabel *estimatedCostInfoLabel = (UILabel *)[cell.contentView viewWithTag:4];
+    
+    estimatedCostInfoLabel.text=@"Estimated Cost: 0.00£";
     
     if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"9.0")) {
         titleLabel.font=[UIFont systemFontOfSize:20];
@@ -127,6 +129,8 @@
     }
     if (listItems.count==0) {
         detailTitleLabel.text = @"<No Items defined>";
+    }else {
+        estimatedCostInfoLabel.text=[NSString stringWithFormat:@"Estimated Cost: %.2f£",listItems.count * 0.75f];
     }
     
     if ([[DBOperationManager instance] isListShared:[self.objects[indexPath.row] objectForKey:@"listId"]]) {
@@ -134,6 +138,7 @@
     }else{
         imgview.image = [UIImage imageNamed:@"sh.png"];
     }
+    
     return cell;
 }
 
@@ -168,5 +173,12 @@
         [self.tableView reloadData];
 
     }
+}
+
+
+-(float) randFloatBetween:(float)low and:(float)high
+{
+    float diff = high - low;
+    return (((float) rand() / RAND_MAX) * diff) + low;
 }
 @end

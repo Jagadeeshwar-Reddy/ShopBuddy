@@ -180,7 +180,7 @@
     
     [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
         
-        FMResultSet *rs = [db executeQuery:@"SELECT * FROM shoppingList"];
+        FMResultSet *rs = [db executeQuery:@"SELECT * FROM shoppingList ORDER BY rowid DESC"];
         while ([rs next]) {
             
             NSString *name = [rs stringForColumn:@"listTitle"];
@@ -218,6 +218,8 @@
 
 -(NSMutableArray *)itemsForList:(NSString*)listId{
     __block NSMutableArray* items = [NSMutableArray array];
+    BOOL isListShared = [self isListShared:listId];
+    BOOL isMyList = ([[self ownerForList:listId] isEqualToString:[self user]] ? YES : NO);
     
     [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
         
@@ -246,6 +248,31 @@
             FMResultSet *rs3 = [db executeQuery:@"SELECT name FROM DefaultItems WHERE productId=?",@(productId)];
             while ([rs3 next]) {
                 [item setObject:[rs3 stringForColumnIndex:0] forKey:@"name"];
+            }
+            
+            if (isListShared) {
+                
+                if (storeInfo.length) {
+                    
+                    NSInteger aisleNumber = [item[@"aisle"] integerValue];
+                    
+                    if (isMyList) {
+                        if (aisleNumber>6) {
+                            [item setObject:@1 forKey:@"isAssignedToMe"];
+                        }
+                        else{
+                            [item setObject:@0 forKey:@"isAssignedToMe"];
+                        }
+                    }
+                    else{
+                        if (aisleNumber>6) {
+                            [item setObject:@0 forKey:@"isAssignedToMe"];
+                        }
+                        else{
+                            [item setObject:@1 forKey:@"isAssignedToMe"];
+                        }
+                    }
+                }
             }
             
             [items addObject:item];
@@ -290,5 +317,17 @@
         }
     }];
     return str;
+}
+
+-(NSString *)ownerForList:(NSString *)listId{
+    __block NSString* str = @"";
+    
+    [GlobalDatabaseQueue inDatabase:^(FMDatabase *db) {
+        FMResultSet *rs = [db executeQuery:@"SELECT listOwner FROM shoppingList WHERE listId = ?", listId];
+        while ([rs next]) {
+            str=[rs stringForColumnIndex:0];
+        }
+    }];
+    return (str==nil ? @"" : str);
 }
 @end

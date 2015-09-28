@@ -43,8 +43,6 @@
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(peerDidReceiveShopListData:)
                                                  name:@"MPC_DidReceiveDataNotification"
@@ -53,10 +51,39 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+    [self reloadData];
+}
+
+-(void)reloadData{
     self.dataArray = [[DBOperationManager instance] itemsForList:self.detailItem[@"listId"]];
+    
+    UIView *tableHeaderView = self.tableView.tableHeaderView;
+    UIView *infoView = [tableHeaderView viewWithTag:99];
+    CGRect infoviewFrame = infoView.frame;
+    CGRect headerViewFrame = tableHeaderView.frame;
+
+    if ([[DBOperationManager instance] isListShared:self.detailItem[@"listId"]] == NO) {
+        
+        infoviewFrame.size.height = 0.0f;
+        [infoView setFrame:infoviewFrame];
+        infoView.hidden=YES;
+        
+        headerViewFrame.size.height = 40.0f;
+        tableHeaderView.frame = headerViewFrame;
+    }
+    else{
+        infoviewFrame.size.height = 40.0f;
+        [infoView setFrame:infoviewFrame];
+        infoView.hidden=NO;
+        
+        headerViewFrame.size.height = 80.0f;
+        tableHeaderView.frame = headerViewFrame;
+    }
+    self.tableView.tableHeaderView = tableHeaderView;
+    
     [self.tableView reloadData];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -150,11 +177,17 @@
     UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:1];
     UILabel *detailTitleLabel = (UILabel *)[cell.contentView viewWithTag:2];
     
+    UILabel *colorLabel = (UILabel *)[cell.contentView viewWithTag:4];
+    colorLabel.backgroundColor=[UIColor whiteColor];
     
+    //63, 198, 212 => invert
+    //(223.5, 156, 21.5)
     
+    NSDictionary *dict = nil;
+
     // Configure the cell...
     if (indexPath.section == 1) {
-        NSDictionary *dict = [self pickedItems][indexPath.row];
+        dict = [self pickedItems][indexPath.row];
 
         NSDictionary* attributes = @{
                                      NSStrikethroughStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]
@@ -163,20 +196,27 @@
         NSAttributedString* attrText = [[NSAttributedString alloc] initWithString:dict[@"name"] attributes:attributes];
         titleLabel.attributedText = attrText;
         detailTitleLabel.text = dict[@"aisle"];
-
     }else{
-        NSDictionary *dict = [self unPickedItems][indexPath.row];
+        dict = [self unPickedItems][indexPath.row];
 
         titleLabel.text = dict[@"name"];
         detailTitleLabel.text = dict[@"aisle"];
     }
 
-    
+    if (dict[@"isAssignedToMe"]) {
+        if ([dict[@"isAssignedToMe"] integerValue] == 1) {
+            UIColor *clr = [UIColor colorWithRed:63.0f/255.0f green:198.0f/255.0f blue:212.0f/255.0f alpha:1.0];
+            colorLabel.backgroundColor=clr;
+        }else{
+            UIColor *clr = [UIColor colorWithRed:223.5f/255.0f green:156.0f/255.0f blue:21.5f/255.0f alpha:1.0];
+            colorLabel.backgroundColor=clr;
+        }
+    }
 
     return cell;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return (section==0?@"":@"Picked Items");
+    return (section==0?@"": (self.dataArray.count? @"Picked Items" : nil));
 }
 - (NSArray *)leftButtons
 {
@@ -381,17 +421,15 @@
 
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController {
-    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
     [self shareBasket];
+    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController {
-    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:^{
-        
-        if(self.appDelegate.mpcHandler.session.connectedPeers.count){
-            [self shareBasket];
-        }
-    }];
+    if(self.appDelegate.mpcHandler.session.connectedPeers.count){
+        [self shareBasket];
+    }
+    [self.appDelegate.mpcHandler.browser dismissViewControllerAnimated:YES completion:^{}];
 }
 -(void)shareBasket{
     [[DBOperationManager instance] updateBasketSharringStaus:1 toShoppingList:self.detailItem[@"listId"]];

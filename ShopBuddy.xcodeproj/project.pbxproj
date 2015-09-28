@@ -89,7 +89,6 @@
 		F5E3D7CB1BB6AFF00029CCA3 /* JSQSystemSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E3D7CA1BB6AFF00029CCA3 /* JSQSystemSoundPlayer.m */; settings = {ASSET_TAGS = (); }; };
 		F5F0766F1BB6B2AD00B932CC /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0766E1BB6B2AD00B932CC /* MessagesViewController.m */; settings = {ASSET_TAGS = (); }; };
 		F5F076721BB6B75200B932CC /* MessagesModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F076711BB6B75200B932CC /* MessagesModelData.m */; settings = {ASSET_TAGS = (); }; };
-		F5F076741BB8294600B932CC /* Shared@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F076731BB8294600B932CC /* Shared@2x.png */; settings = {ASSET_TAGS = (); }; };
 		F5F076771BB8323B00B932CC /* shared-list-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F076751BB8323B00B932CC /* shared-list-1@2x.png */; settings = {ASSET_TAGS = (); }; };
 		F5F076781BB8323B00B932CC /* sh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F076761BB8323B00B932CC /* sh@2x.png */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -268,7 +267,6 @@
 		F5F0766E1BB6B2AD00B932CC /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
 		F5F076701BB6B75200B932CC /* MessagesModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessagesModelData.h; path = JSQMessagesViewController/MessagesModelData.h; sourceTree = "<group>"; };
 		F5F076711BB6B75200B932CC /* MessagesModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessagesModelData.m; path = JSQMessagesViewController/MessagesModelData.m; sourceTree = "<group>"; };
-		F5F076731BB8294600B932CC /* Shared@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shared@2x.png"; sourceTree = "<group>"; };
 		F5F076751BB8323B00B932CC /* shared-list-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shared-list-1@2x.png"; sourceTree = "<group>"; };
 		F5F076761BB8323B00B932CC /* sh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sh@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -360,7 +358,6 @@
 				F5B900231BB562C200179CD2 /* ShoppingBuddy.sqlite */,
 				F5B9FFED1BB4250000179CD2 /* Main.storyboard */,
 				F5E3D7351BB5ABAA0029CCA3 /* chat@2x.png */,
-				F5F076731BB8294600B932CC /* Shared@2x.png */,
 				F5F076751BB8323B00B932CC /* shared-list-1@2x.png */,
 				F5F076761BB8323B00B932CC /* sh@2x.png */,
 				F5B9FFF01BB4250000179CD2 /* Assets.xcassets */,
@@ -713,7 +710,6 @@
 				F5E3D7361BB5ABAA0029CCA3 /* chat@2x.png in Resources */,
 				F5B9FFF11BB4250000179CD2 /* Assets.xcassets in Resources */,
 				F5B9FFEF1BB4250000179CD2 /* Main.storyboard in Resources */,
-				F5F076741BB8294600B932CC /* Shared@2x.png in Resources */,
 				F5E3D7301BB596140029CCA3 /* cross@2x.png in Resources */,
 				F5F076771BB8323B00B932CC /* shared-list-1@2x.png in Resources */,
 				F5E3D7321BB596200029CCA3 /* list@2x.png in Resources */,

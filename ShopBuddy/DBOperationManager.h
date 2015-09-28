@@ -34,4 +34,7 @@
 -(NSString *)user;
 -(NSString*)storeNameForList:(NSString*)listId;
 -(BOOL)isListShared:(NSString*)listId;
+-(NSString *)ownerForList:(NSString *)listId;
+
+
 @end
