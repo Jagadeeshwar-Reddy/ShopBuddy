@@ -82,6 +82,16 @@
     self.tableView.tableHeaderView = tableHeaderView;
     
     [self.tableView reloadData];
+    
+    BOOL isMyList = ([[[DBOperationManager instance] ownerForList:self.detailItem[@"listId"]] isEqualToString:[[DBOperationManager instance] user]] ? YES : NO);
+
+    if (isMyList == NO) {
+        UILabel *myItemsLabel = (UILabel *)[infoView viewWithTag:998];
+        UILabel *tomsItemsLabel = (UILabel *)[infoView viewWithTag:999];
+
+        myItemsLabel.text=@"Tom's Items";
+        tomsItemsLabel.text=@"My Items";
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -462,6 +472,11 @@
             }
             
         }];
+        
+        if (self.dataArray.count && [self unPickedItems].count == 0) {
+            [[[UIAlertView alloc] initWithTitle:@"Hola! All items are picked." message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+        }
+        
         [self.tableView reloadData];
     }
 }
